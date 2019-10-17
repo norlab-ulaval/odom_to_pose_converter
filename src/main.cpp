@@ -7,7 +7,8 @@ ros::Publisher publisher;
 void subscriberCallback(const nav_msgs::Odometry& odometryMsg)
 {
 	geometry_msgs::PoseStamped poseStamped;
-	poseStamped.header = odometryMsg.header;
+	poseStamped.header.frame_id = odometryMsg.header.frame_id;
+	poseStamped.header.stamp = odometryMsg.header.stamp;
 	poseStamped.pose = odometryMsg.pose.pose;
 	publisher.publish(poseStamped);
 }
