@@ -10,7 +10,7 @@ project(odom_to_pose_converter)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   nav_msgs
-  geometry_msgs
+  tf2
 )
 
 ## System dependencies are found with CMake's conventions
