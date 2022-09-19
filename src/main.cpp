@@ -1,27 +1,38 @@
-#include <ros/ros.h>
-#include <nav_msgs/Odometry.h>
-#include <geometry_msgs/PoseStamped.h>
+#include <rclcpp/rclcpp.hpp>
+#include <nav_msgs/msg/odometry.hpp>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 
-ros::Publisher publisher;
-
-void subscriberCallback(const nav_msgs::Odometry& odometryMsg)
+class OdomToPoseNode : public rclcpp::Node
 {
-	geometry_msgs::PoseStamped poseStamped;
-	poseStamped.header.frame_id = odometryMsg.header.frame_id;
-	poseStamped.header.stamp = odometryMsg.header.stamp;
-	poseStamped.pose = odometryMsg.pose.pose;
-	publisher.publish(poseStamped);
-}
+public:
+    OdomToPoseNode() :
+        Node("odom_to_pose_node")
+    {
+        odomSubscription = this->create_subscription<nav_msgs::msg::Odometry>("odom_in", 1000,
+                                                                              std::bind(&OdomToPoseNode::subscriptionCallback, this,
+                                                                                        std::placeholders::_1));
+        posePublisher = this->create_publisher<geometry_msgs::msg::PoseStamped>("pose_out", 1000);
+    }
+
+private:
+    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odomSubscription;
+    rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr posePublisher;
+
+    void subscriptionCallback(const nav_msgs::msg::Odometry& odometryMsg)
+    {
+        geometry_msgs::msg::PoseStamped poseStamped;
+        poseStamped.header.frame_id = odometryMsg.header.frame_id;
+        poseStamped.header.stamp = odometryMsg.header.stamp;
+        poseStamped.pose = odometryMsg.pose.pose;
+        posePublisher->publish(poseStamped);
+    }
+
+};
 
 int main(int argc, char** argv)
 {
-	ros::init(argc, argv, "odom_to_pose_converter_node");
-	ros::NodeHandle nodeHandle;
-	
-	ros::Subscriber subscriber = nodeHandle.subscribe("odom_in", 1000, subscriberCallback);
-	publisher = nodeHandle.advertise<geometry_msgs::PoseStamped>("pose", 1000);
-	
-	ros::spin();
-	
-	return 0;
+    rclcpp::init(argc, argv);
+    rclcpp::spin(std::make_shared<OdomToPoseNode>());
+    rclcpp::shutdown();
+    return 0;
 }
