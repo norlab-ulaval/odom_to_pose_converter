@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(odom_to_pose_converter)
 
+set(CMAKE_BUILD_TYPE "Release")
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(nav_msgs REQUIRED)
