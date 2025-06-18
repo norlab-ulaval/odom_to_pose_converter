@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>odom_to_pose_converter</name>
+  <name>odom_to_path_converter</name>
   <version>0.0.2</version>
-  <description>A node for converting nav_msgs/Odometry messages to geometry_msgs/PoseStamped messages.</description>
+  <description>A node for converting nav_msgs/Odometry messages to geometry_msgs/Path messages.</description>
 
   <maintainer email="simon-pierre.deschenes.1@ulaval.ca">Simon-Pierre Deschênes</maintainer>
 

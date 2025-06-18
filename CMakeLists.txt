@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(odom_to_pose_converter)
+project(odom_to_path_converter)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
